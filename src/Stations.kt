@@ -1,8 +1,7 @@
-class Stations (
+data class Stations (
     val name: String,
-    val SinglePrice : Double,
-    val RegularPrice : Double,
-    var Sales: Double,
-    var takings: Double
-
+    val singlePrice: Double,
+    val returnPrice: Double,
+    var salesCount: Int = 0,
+    var takings: Double = 0.0
 ){}
