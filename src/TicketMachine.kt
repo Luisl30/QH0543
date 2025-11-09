@@ -1,5 +1,5 @@
 class TicketMachine (
-
+//declaring values attributes, this will be the main list of stations
     val stations: MutableList<Station> = mutableListOf(
         Station("Southampton", 5.50, 10.00),
         Station("Portsmouth", 4.20, 8.00),
