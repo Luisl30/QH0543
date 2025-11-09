@@ -5,4 +5,5 @@ fun main() {
     // For now, it just starts the customer menu.
     // This will be expanded during integration.
     machine.runCustomerMenu()
+    Station("London", 25.00, 45.00)
 }
