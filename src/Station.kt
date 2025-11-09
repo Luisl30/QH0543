@@ -1,4 +1,4 @@
-data class Stations (
+data class Station (
     val name: String,
     val singlePrice: Double,
     val returnPrice: Double,
