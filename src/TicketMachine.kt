@@ -20,11 +20,20 @@ class TicketMachine (
     var currentBalance : Double,
     var selectedDestination : String,
     var ticketType : String,
+   // the ticket machine will be situated in the fictional station London
     val originStation: String = "London Central",
 
     ){
     fun userMenu(){
-        println()
+        println("Welcome to the $originStation Ticket Machine!")
+        while (true){
+            //show menu to user customer
+            println("1. Search for a ticket")
+            println("2. Insert money")
+            println("3. Buy selected ticket")
+            println("4. Exit")
+            print("Please choose an option (1-4): ")
+        }
     }
 
 }
