@@ -24,15 +24,34 @@ class TicketMachine (
     val originStation: String = "London Central",
 
     ){
-    fun userMenu(){
+    fun mainMenu(){
         println("Welcome to the $originStation Ticket Machine!")
         while (true){
             //show menu to user customer
+            println("\n--- Main Menu ---")
+            println("Current Balance: £${"%.2f".format(currentBalance)}")
+            if (selectedStation != null) {
+                println("Selected: $ticketType ticket to $selectedDestination")
+            }
             println("1. Search for a ticket")
             println("2. Insert money")
             println("3. Buy selected ticket")
             println("4. Exit")
             print("Please choose an option (1-4): ")
+
+            when(readln()){
+                "1" -> searchTicket()
+                "2" -> insertMoney()
+                "3" -> buyTicket()
+                "4" -> {
+                    println("Thanks you for using the ticket machine. GoodBye")
+                        if(currentBalance > 0){
+                            println("Please take your change: £${"%.2f".format(currentBalance)}")
+                        }
+                    return // End the program
+
+                }
+            }
         }
     }
 
