@@ -7,5 +7,6 @@ fun main() {
         selectedDestination = "",
         ticketType = ""
     )
+    println("Welcome to the $machine.originStation Ticket Machine!")
     machine.mainMenu()
 }

@@ -25,13 +25,13 @@ class TicketMachine (
 
     ){
     fun mainMenu(){
-        println("Welcome to the $originStation Ticket Machine!")
+
         while (true){
             //show menu to user customer
             println("\n--- Main Menu ---")
             println("Current Balance: £${"%.2f".format(currentBalance)}")
             if (selectedDestination != null) {
-                println("Selected: $ticketType ticket to $selectedDestination.name")
+                println("Selected: $ticketType ticket to $selectedDestination ")
             }
             println("1. Search for a ticket")
             println("2. Insert money")
@@ -55,7 +55,8 @@ class TicketMachine (
         }
     }
 
-    fun searchTicket(){
+    fun searchTicket(
+    ){
         // 1. Ask for ticket type first
         print("Enter ticket type (single/return): ")
         val typeInput = readln().lowercase()
@@ -72,26 +73,20 @@ class TicketMachine (
         println("\n--- Available Destinations ---")
 
         stations.forEach { station ->
-            if (typeInput.equals("single", ignoreCase = true)) {
-                // Print the single price
-                println("- ${station.name} - £${"%.2f".format(station.singlePrice)}")
-            } else {
-                // Print the return price
-                println("- ${station.name} - £${"%.2f".format(station.returnPrice)}")
-            }
+            println("- ${station.name}")
         }
 
         // 4. Ask the user to type the name of the station
         print("\nPlease enter the name of your destination: ")
         val destNameInput = readln()
 
-        // 5. Find the station in the list
+        //  Find the station in the list
         //    This checks for typos by ignoring case
         val foundStation = stations.find {
             it.name.equals(destNameInput, ignoreCase = true)
         }
 
-        // 6. Check if the name was valid
+        // Check if the name was valid
         if (foundStation == null) {
             // This will catch typos or names not in the list
             println("Sorry, that is not a valid station name. Please check your spelling and try again.")
@@ -102,9 +97,16 @@ class TicketMachine (
             // 7. --- Success ---
             // Save the choice to our state variables
             selectedDestination = foundStation.name
+            val price : Double = 0.0
             ticketType = typeInput.lowercase() // Save as "single" or "return"
+            val ticketPrice = if (typeInput == "single") {
+                foundStation.singlePrice
+            } else {
+                foundStation.returnPrice
+            }
 
             println("Selected: $ticketType ticket to ${foundStation.name}")
+            println("Price: $ticketPrice")
         }
 
         mainMenu()
