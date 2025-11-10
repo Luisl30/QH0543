@@ -7,5 +7,5 @@ fun main() {
         selectedDestination = "",
         ticketType = ""
     )
-    machine.userMenu()
+    machine.mainMenu()
 }
