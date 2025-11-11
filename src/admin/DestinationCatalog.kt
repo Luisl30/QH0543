@@ -5,9 +5,6 @@ import kotlin.math.round
 
 class DestinationCatalog(
     val stations: MutableList<Station> = mutableListOf()
-)
-class DestinationCatalog(
-    val stations: MutableList<Station> = mutableListOf()
 ) {
     /** Return a snapshot so callers can't mutate the internal list directly */
     fun listStations(): List<Station> = stations.toList()
