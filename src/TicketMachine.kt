@@ -38,10 +38,10 @@ class TicketMachine (
             println("3. Buy selected ticket")
             println("4. Exit")
             print("Please choose an option (1-4): ")
-
+            //according to the input it will take the user to a different function
             when(readln()){
                 "1" -> return searchTicket()
-                "2" -> return // insertMoney()
+                "2" -> return insertMoney()
                 "3" -> return //buyTicket()
                 "4" -> {
                     println("Thanks you for using the ticket machine. GoodBye")
@@ -64,7 +64,7 @@ class TicketMachine (
         // 2. Validate the type input
         if (!typeInput.equals("single", ignoreCase = true) && !typeInput.equals("return", ignoreCase = true)) {
             println("Invalid ticket type. Please try again.")
-            return // Exit the function
+            mainMenu() // Exit the function
         }
 
         // 3. Show the list of stations *with* prices
@@ -110,6 +110,27 @@ class TicketMachine (
         }
 
         mainMenu()
+    }
+
+    // this will prompt the user to insent money into the ticket machine
+    fun insertMoney(){
+        println("--- Insert Money ---")
+        print("Current balance: £${"%.2f".format(currentBalance)}\n")
+        print("How much money do you want to insert? £")
+        //we use try catch to make sure the input is correct
+        try {
+            val amount = readln().toDouble()
+            if (amount > 0) {
+                currentBalance += amount
+                println("New balance: £${"%.2f".format(currentBalance)}")
+            } else {
+                println("Please enter a positive amount.")
+            }
+            //looks for any input that is not numerical
+        } catch (e: NumberFormatException) {
+            println("Invalid input. Please enter a number (e.g., 5.50).")
+        }
+
     }
 
 }
