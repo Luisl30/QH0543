@@ -142,7 +142,7 @@ class TicketMachine (
         }
 
         //get price of the ticket based on the type
-        println("Your total for $selectedDestination, $ticketType will be: £${".2f".format(ticketPrice)}%")
+        println("Your total for $selectedDestination, $ticketType will be: £${"%.2f".format(ticketPrice)}")
 
         //make sure the balance is enough
         if (ticketPrice > currentBalance) {
