@@ -130,7 +130,7 @@ class TicketMachine (
         } catch (e: NumberFormatException) {
             println("Invalid input. Please enter a number (e.g., 5.50).")
         }
-
+        mainMenu()
     }
 
 }
