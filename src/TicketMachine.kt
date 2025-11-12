@@ -20,6 +20,7 @@ class TicketMachine (
     var currentBalance : Double,
     var selectedDestination : String,
     var ticketType : String,
+    var ticketPrice : Double = 0.0,
    // the ticket machine will be situated in the fictional station London
     val originStation: String = "London Central",
 
@@ -42,7 +43,7 @@ class TicketMachine (
             when(readln()){
                 "1" -> return searchTicket()
                 "2" -> return insertMoney()
-                "3" -> return //buyTicket()
+                "3" -> return buyTicket()
                 "4" -> {
                     println("Thanks you for using the ticket machine. GoodBye")
                         if(currentBalance > 0){
@@ -99,7 +100,7 @@ class TicketMachine (
             selectedDestination = foundStation.name
             val price : Double = 0.0
             ticketType = typeInput.lowercase() // Save as "single" or "return"
-            val ticketPrice = if (typeInput == "single") {
+            ticketPrice = if (typeInput == "single") {
                 foundStation.singlePrice
             } else {
                 foundStation.returnPrice
@@ -132,5 +133,43 @@ class TicketMachine (
         }
         mainMenu()
     }
+    //this function will allow to purchase the ticket
+    fun buyTicket(){
+
+        println("--- Buy Ticket ---")
+        if (selectedDestination == null || ticketType == null) {
+            println("Please select a destination first.")
+        }
+
+        //get price of the ticket based on the type
+        println("Your total for $selectedDestination, $ticketType will be: £${"%.2f".format(ticketPrice)}%")
+
+        //make sure the balance is enough
+        if (ticketPrice > currentBalance) {
+            println("Your balance is insuficient for this ticket, please enter more money")
+            mainMenu()
+        }
+        //successful transaction
+
+        currentBalance-= ticketPrice
+
+        println("Your balance is $currentBalance")
+        println("printing your ticket")
+        println("********************")
+        println(originStation)
+        println("to")
+        println(selectedDestination)
+        println("Price: £${"%.2f".format(ticketPrice)} [$ticketType]")
+        println("********************")
+        if (currentBalance > 0) {
+            println("Your change: £${"%.2f".format(currentBalance)}")
+            currentBalance = 0.0
+        }
+        // 4. Reset for next customer
+        selectedDestination = ""
+        ticketType = ""
+        ticketPrice = 0.0
+    }
+
 
 }
