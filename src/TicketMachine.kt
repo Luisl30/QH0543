@@ -18,9 +18,7 @@ class TicketMachine (
        Station("Milton Sands", 9.90, 17.50)
     ),
     var currentBalance : Double,
-    var selectedDestination : String,
-    var ticketType : String,
-    var ticketPrice : Double = 0.0,
+    var selectedTicket : Ticket? = null,
    // the ticket machine will be situated in the fictional station London
     val originStation: String = "London Central",
 
@@ -31,9 +29,9 @@ class TicketMachine (
             //show menu to user customer
             println("\n--- Main Menu ---")
             println("Current Balance: £${"%.2f".format(currentBalance)}")
-            if (selectedDestination != null) {
+            /*if (selectedDestination != null) {
                 println("Selected: $ticketType ticket to $selectedDestination ")
-            }
+            }*/
             println("1. Search for a ticket")
             println("2. Insert money")
             println("3. Buy selected ticket")
@@ -79,7 +77,7 @@ class TicketMachine (
 
         // 4. Ask the user to type the name of the station
         print("\nPlease enter the name of your destination: ")
-        val destNameInput = readln()
+        val destNameInput = readln().lowercase()
 
         //  Find the station in the list
         //    This checks for typos by ignoring case
@@ -91,16 +89,13 @@ class TicketMachine (
         if (foundStation == null) {
             // This will catch typos or names not in the list
             println("Sorry, that is not a valid station name. Please check your spelling and try again.")
-            // Clear any old selection
-            selectedDestination = ""
-            ticketType = ""
         } else {
             // 7. --- Success ---
             // Save the choice to our state variables
-            selectedDestination = foundStation.name
+            selectedTicket = Ticket(station = foundStation, type = typeInput)
             val price : Double = 0.0
             ticketType = typeInput.lowercase() // Save as "single" or "return"
-            ticketPrice = if (typeInput == "single") {
+            val ticketPrice = if (typeInput == "single") {
                 foundStation.singlePrice
             } else {
                 foundStation.returnPrice
