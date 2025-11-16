@@ -92,17 +92,15 @@ class TicketMachine (
         } else {
             // 7. --- Success ---
             // Save the choice to our state variables
-            selectedTicket = Ticket(station = foundStation, type = typeInput)
-            val price : Double = 0.0
-            ticketType = typeInput.lowercase() // Save as "single" or "return"
+             // Save as "single" or "return"
             val ticketPrice = if (typeInput == "single") {
                 foundStation.singlePrice
             } else {
                 foundStation.returnPrice
             }
-
-            println("Selected: $ticketType ticket to ${foundStation.name}")
-            println("Price: $ticketPrice")
+            selectedTicket = Ticket(station = foundStation, type = typeInput, price = ticketPrice)
+            println("Selected: $typeInput ticket to ${foundStation.name}")
+            println("Price: £${"%.2f".format(ticketPrice)}")
         }
 
         mainMenu()
@@ -132,19 +130,22 @@ class TicketMachine (
     fun buyTicket(){
 
         println("--- Buy Ticket ---")
-        if (selectedDestination == null || ticketType == null) {
-            println("Please select a destination first.")
+        if (selectedTicket == null) {
+            println("\n \n Please select a destination first.\n \n")
+            mainMenu()
         }
-
+        val ticketPrice = selectedTicket!!.price
+        val type = selectedTicket!!.type
+        val name = selectedTicket!!.station
         //get price of the ticket based on the type
-        println("Your total for $selectedDestination, $ticketType will be: £${"%.2f".format(ticketPrice)}")
+        println("Your total for $name, $type will be: £${"%.2f".format(ticketPrice)}")
 
         //make sure the balance is enough
         if (ticketPrice > currentBalance) {
-            println("Your balance is insuficient for this ticket, please enter more money")
+            println("\n \n Your balance is insufficient for this ticket, please enter more money \n \n")
             mainMenu()
         }
-        //successful transaction
+        //if successful transaction
 
         currentBalance-= ticketPrice
 
@@ -153,17 +154,16 @@ class TicketMachine (
         println("********************")
         println(originStation)
         println("to")
-        println(selectedDestination)
-        println("Price: £${"%.2f".format(ticketPrice)} [$ticketType]")
+        println(selectedTicket!!.station)
+        println("Price: £${"%.2f".format(ticketPrice)} Ticket Type: [$type]")
         println("********************")
         if (currentBalance > 0) {
             println("Your change: £${"%.2f".format(currentBalance)}")
             currentBalance = 0.0
         }
         // 4. Reset for next customer
-        selectedDestination = ""
-        ticketType = ""
-        ticketPrice = 0.0
+        selectedTicket = null
+
     }
 
 
