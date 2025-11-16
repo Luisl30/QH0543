@@ -16,7 +16,7 @@ class TicketMachine (
         Station("Milton Sands", 9.90, 17.50)
     ),
     var currentBalance : Double,
-    var selectedDestination : String,
+    var selectedTicket : Ticket,
     // the ticket machine will be situated in the fictional station London
     val originStation: String = "London Central",
     val users: List<User> = listOf(
