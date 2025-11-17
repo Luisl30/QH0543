@@ -43,7 +43,7 @@ class TicketMachine (
         TODO("Member B: implement addDestination")
     }
 
-    /** Change destination details: name + prices. */
+    /** Change destination details: name + prices.  */
     fun changeDestinationDetails(
         oldName: String,
         newName: String,
