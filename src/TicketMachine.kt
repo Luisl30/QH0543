@@ -25,4 +25,36 @@ class TicketMachine (
     val specialOffers: MutableList<SpecialOffer> = mutableListOf<SpecialOffer>()
 
     )
-{}
+{
+
+    // Member B – Admin methods
+
+    /** Show all destinations for admin. */
+    fun viewAllDestinations(): List<Station> {
+        TODO("Member B: implement viewAllDestinations")
+    }
+
+    /** Add a new destination (station). */
+    fun addDestination(
+        name: String,
+        singlePrice: Double,
+        returnPrice: Double
+    ): Boolean {
+        TODO("Member B: implement addDestination")
+    }
+
+    /** Change destination details: name + prices. */
+    fun changeDestinationDetails(
+        oldName: String,
+        newName: String,
+        newSinglePrice: Double,
+        newReturnPrice: Double
+    ): Boolean {
+        TODO("Member B: implement changeDestinationDetails")
+    }
+
+    /** Change all prices by a factor (e.g. 1.1 = +10%, 0.9 = -10%). */
+    fun changeAllPricesByFactor(factor: Double) {
+        TODO("Member B: implement changeAllPricesByFactor")
+    }
+}
