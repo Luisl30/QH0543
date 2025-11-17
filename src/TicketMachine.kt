@@ -31,7 +31,7 @@ class TicketMachine (
 
     /** Show all destinations for admin. */
     fun viewAllDestinations(): List<Station> {
-        TODO("Member B: implement viewAllDestinations")
+        return stations.toList()
     }
 
     /** Add a new destination (station). */
