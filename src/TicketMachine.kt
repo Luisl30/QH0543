@@ -77,6 +77,9 @@ class TicketMachine (
 
     /** Change all prices by a factor (e.g. 1.1 = +10%, 0.9 = -10%). */
     fun changeAllPricesByFactor(factor: Double) {
-        TODO("Member B: implement changeAllPricesByFactor")
+        stations.forEach { station ->
+            station.singlePrice = (station.singlePrice * factor * 100).toInt() / 100.0
+            station.returnPrice = (station.returnPrice * factor * 100).toInt() / 100.0
+        }
     }
 }
