@@ -63,7 +63,16 @@ class TicketMachine (
         newSinglePrice: Double,
         newReturnPrice: Double
     ): Boolean {
-        TODO("Member B: implement changeDestinationDetails")
+        // find the station by its old name
+        val station = stations.find { it.name.equals(oldName, ignoreCase = true) }
+            ?: return false
+
+        // apply updates
+        station.name = newName
+        station.singlePrice = newSinglePrice
+        station.returnPrice = newReturnPrice
+
+        return true
     }
 
     /** Change all prices by a factor (e.g. 1.1 = +10%, 0.9 = -10%). */
