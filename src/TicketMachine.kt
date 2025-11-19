@@ -40,7 +40,20 @@ class TicketMachine (
         singlePrice: Double,
         returnPrice: Double
     ): Boolean {
-        TODO("Member B: implement addDestination")
+        // check if a station with the same name already exists
+        val exists = stations.any { it.name.equals(name, ignoreCase = true) }
+        if (exists) {
+            return false
+        }
+
+        // create and add the new station
+        val newStation = Station(
+            name = name,
+            singlePrice = singlePrice,
+            returnPrice = returnPrice
+        )
+        stations.add(newStation)
+        return true
     }
 
     /** Change destination details: name + prices.  */
