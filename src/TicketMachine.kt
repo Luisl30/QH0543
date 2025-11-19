@@ -63,15 +63,23 @@ class TicketMachine (
         newSinglePrice: Double,
         newReturnPrice: Double
     ): Boolean {
-        // find the station by its old name
-        val station = stations.find { it.name.equals(oldName, ignoreCase = true) }
-            ?: return false
+        // find index of the station by its old name
+        val index = stations.indexOfFirst { it.name.equals(oldName, ignoreCase = true) }
+        if (index == -1) {
+            return false
+        }
 
-        // apply updates
-        station.name = newName
-        station.singlePrice = newSinglePrice
-        station.returnPrice = newReturnPrice
+        val oldStation = stations[index]
 
+        // create a new Station with updated values (copy keeps sales and takings)
+        val updatedStation = oldStation.copy(
+            name = newName,
+            singlePrice = newSinglePrice,
+            returnPrice = newReturnPrice
+        )
+
+        // replace in the list
+        stations[index] = updatedStation
         return true
     }
 
