@@ -17,12 +17,76 @@ class TicketMachine (
        Station("Bramley Cross", 5.80, 10.00),
        Station("Milton Sands", 9.90, 17.50)
     ),
-    var currentBalance : Double,
+    var currentBalance : Double = 0.0,
     var selectedTicket : Ticket? = null,
     // the ticket machine will be situated in the fictional station London
     val originStation: String = "London Central",
+    ) {
 
-    ){
+    // Member B – Admin methods
+
+    /** Show all destinations for admin. */
+    fun viewAllDestinations(): List<Station> {
+        return stations.toList()
+    }
+
+    /** Add a new destination (station). */
+    fun addDestination(
+        name: String,
+        singlePrice: Double,
+        returnPrice: Double
+    ): Boolean {
+        // check if a station with the same name already exists
+        val exists = stations.any { it.name.equals(name, ignoreCase = true) }
+        if (exists) {
+            return false
+        }
+
+        // create and add the new station
+        val newStation = Station(
+            name = name,
+            singlePrice = singlePrice,
+            returnPrice = returnPrice
+        )
+        stations.add(newStation)
+        return true
+    }
+
+    /** Change destination details: name + prices.  */
+    fun changeDestinationDetails(
+        oldName: String,
+        newName: String,
+        newSinglePrice: Double,
+        newReturnPrice: Double
+    ): Boolean {
+        // find index of the station by its old name
+        val index = stations.indexOfFirst { it.name.equals(oldName, ignoreCase = true) }
+        if (index == -1) {
+            return false
+        }
+
+        val oldStation = stations[index]
+
+        // create a new Station with updated values (copy keeps sales and takings)
+        val updatedStation = oldStation.copy(
+            name = newName,
+            singlePrice = newSinglePrice,
+            returnPrice = newReturnPrice
+        )
+
+        // replace in the list
+        stations[index] = updatedStation
+        return true
+    }
+
+    /** Change all prices by a factor (e.g. 1.1 = +10%, 0.9 = -10%). */
+    fun changeAllPricesByFactor(factor: Double) {
+        stations.forEach { station ->
+            station.singlePrice = (station.singlePrice * factor * 100).toInt() / 100.0
+            station.returnPrice = (station.returnPrice * factor * 100).toInt() / 100.0
+        }
+    }
+
     fun mainMenu(){
 
         while (true){
