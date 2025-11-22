@@ -33,24 +33,30 @@ fun loginAdmin(): Boolean {
 
 /**
  * Main entry point of the application.
- * This method protects all admin-only functionality by requiring
- * a successful login using the loginAdmin() function.
- *
- * If the user provides valid administrator credentials,
- * the application proceeds to the admin section.
- * Otherwise, the program terminates or returns to the login prompt,
- * depending on your chosen flow.
+ * Repeatedly asks for admin login. After a successful login
+ * this is where admin-only functionality will be placed.
  */
 fun main() {
-    // Attempt to log in as administrator
-    if (loginAdmin()) {
+    while (true) {
+        // Try to log in as administrator
+        if (loginAdmin()) {
+            println("Admin login successful.")
+            println("You can now access admin-only features.")
 
-        println("Admin login successful.")
-        println("You can now access admin-only features here.")
+            // TODO: Add admin menu (special offers etc.)
+            println("Press ENTER to log out...")
+            readln()
+        } else {
+            println("Login failed.")
+        }
 
-        // TODO: Call admin menu or admin functions here
-        // e.g., runAdminMenu()
-    } else {
-        println("Program terminated due to failed admin authentication.")
+        // Ask if the admin wants to try again
+        println("Do you want to try again? (y/n)")
+        val answer = readln().trim().lowercase()
+
+        if (answer != "y") {
+            println("Exiting program.")
+            break
+        }
     }
 }
