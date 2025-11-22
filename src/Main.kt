@@ -65,6 +65,39 @@ fun main() {
                 }
             }
 
+            fun addOfferFlow(ticketMachine: TicketMachine) {
+                println("Enter station name:")
+                val station = readln().trim()
+
+                println("Enter description:")
+                val description = readln().trim()
+
+                println("Enter start date (YYYY-MM-DD):")
+                val start = LocalDate.parse(readln().trim())
+
+                println("Enter end date (YYYY-MM-DD):")
+                val end = LocalDate.parse(readln().trim())
+
+                val st = ticketMachine.stations.firstOrNull { it.name == station }
+                if (st == null) {
+                    println("Station not found.")
+                    return
+                }
+
+                val offer = SpecialOffer(
+                    id = ticketMachine.specialOffers.size + 1,
+                    station = st,
+                    description = description,
+                    discountFactor = 1.0,
+                    startDate = start,
+                    endDate = end
+                )
+
+                ticketMachine.addSpecialOffer(offer)
+                println("Offer added.")
+            }
+
+
 
             // TODO: Add admin menu (special offers etc.)
             println("Press ENTER to log out...")
