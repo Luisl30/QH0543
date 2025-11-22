@@ -17,9 +17,9 @@ class TicketMachine (
        Station("Bramley Cross", 5.80, 10.00),
        Station("Milton Sands", 9.90, 17.50)
     ),
-    var currentBalance : Double = 0.0,
-    var selectedTicket : Ticket? = null,
-   // the ticket machine will be situated in the fictional station London
+    var currentBalance : Double,
+    var selectedTicket : Ticket,
+    // the ticket machine will be situated in the fictional station London
     val originStation: String = "London Central",
 
     ){
