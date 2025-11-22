@@ -97,6 +97,21 @@ fun main() {
                 println("Offer added.")
             }
 
+            fun searchOfferFlow(ticketMachine: TicketMachine) {
+                println("Enter station name:")
+                val station = readln().trim()
+
+                val list = ticketMachine.findSpecialOffersByStation(station)
+
+                if (list.isEmpty()) {
+                    println("No offers found.")
+                } else {
+                    list.forEach {
+                        println("ID: ${it.id} | ${it.station.name} | ${it.description} | ${it.startDate} → ${it.endDate}")
+                    }
+                }
+            }
+
 
 
             // TODO: Add admin menu (special offers etc.)
