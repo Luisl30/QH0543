@@ -1,4 +1,4 @@
-class TicketMachine (
+class TicketMachine(
     val stations: MutableList<Station> = mutableListOf(
         Station("Colchester", 18.50, 33.00),
         Station("Leeds", 29.80, 55.00),
@@ -17,12 +17,34 @@ class TicketMachine (
     ),
     var currentBalance : Double,
     var selectedTicket : Ticket,
-    // the ticket machine will be situated in the fictional station London
     val originStation: String = "London Central",
     val users: List<User> = listOf(
-        User("admin", "pass123")
+        User(username = "admin", password = "pass123", isAdmin = true)
     ),
-    val specialOffers: MutableList<SpecialOffer> = mutableListOf<SpecialOffer>()
+    val specialOffers: MutableList<SpecialOffer> = mutableListOf()
+) {
 
-    )
-{}
+    /**
+     * Adds a new special offer to the internal list.
+     */
+    fun addSpecialOffer(offer: SpecialOffer) {
+        specialOffers.add(offer)
+    }
+
+    /**
+     * Returns all special offers for a given station name.
+     */
+    fun findSpecialOffersByStation(stationName: String): List<SpecialOffer> {
+        return specialOffers.filter { it.station.name == stationName }
+    }
+
+    /**
+     * Deletes the special offer with the given id.
+     *
+     * @param id  identifier of the offer to be removed
+     * @return true if an offer was removed, false otherwise
+     */
+    fun deleteSpecialOfferById(id: Int): Boolean {
+        return specialOffers.removeIf { it.id == id }
+    }
+}
