@@ -37,4 +37,14 @@ class TicketMachine(
     fun findSpecialOffersByStation(stationName: String): List<SpecialOffer> {
         return specialOffers.filter { it.station.name == stationName }
     }
+
+    /**
+     * Deletes the special offer with the given id.
+     *
+     * @param id  identifier of the offer to be removed
+     * @return true if an offer was removed, false otherwise
+     */
+    fun deleteSpecialOfferById(id: Int): Boolean {
+        return specialOffers.removeIf { it.id == id }
+    }
 }
