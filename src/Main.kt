@@ -31,10 +31,26 @@ fun loginAdmin(): Boolean {
     return true
 }
 
+/**
+ * Main entry point of the application.
+ * This method protects all admin-only functionality by requiring
+ * a successful login using the loginAdmin() function.
+ *
+ * If the user provides valid administrator credentials,
+ * the application proceeds to the admin section.
+ * Otherwise, the program terminates or returns to the login prompt,
+ * depending on your chosen flow.
+ */
 fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
+    // Attempt to log in as administrator
+    if (loginAdmin()) {
 
+        println("Admin login successful.")
+        println("You can now access admin-only features here.")
+
+        // TODO: Call admin menu or admin functions here
+        // e.g., runAdminMenu()
+    } else {
+        println("Program terminated due to failed admin authentication.")
+    }
 }
