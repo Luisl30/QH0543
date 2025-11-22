@@ -43,6 +43,29 @@ fun main() {
             println("Admin login successful.")
             println("You can now access admin-only features.")
 
+            /**
+             * Displays a simple admin menu for managing special offers.
+             */
+            fun showAdminMenu(ticketMachine: TicketMachine) {
+                while (true) {
+                    println("\n=== Admin Menu ===")
+                    println("1. Add special offer")
+                    println("2. Search offers by station")
+                    println("3. Delete offer by ID")
+                    println("4. Exit menu")
+                    print("Choose option: ")
+
+                    when (readln().trim()) {
+                        "1" -> addOfferFlow(ticketMachine)
+                        "2" -> searchOfferFlow(ticketMachine)
+                        "3" -> deleteOfferFlow(ticketMachine)
+                        "4" -> return
+                        else -> println("Invalid option.")
+                    }
+                }
+            }
+
+
             // TODO: Add admin menu (special offers etc.)
             println("Press ENTER to log out...")
             readln()
