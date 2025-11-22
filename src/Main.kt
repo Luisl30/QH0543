@@ -41,7 +41,8 @@ fun main() {
         // Try to log in as administrator
         if (loginAdmin()) {
             println("Admin login successful.")
-            println("You can now access admin-only features.")
+            showAdminMenu(TicketMachine(0.0, Ticket()))
+
 
             /**
              * Displays a simple admin menu for managing special offers.
