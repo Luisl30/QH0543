@@ -112,6 +112,18 @@ fun main() {
                 }
             }
 
+            fun deleteOfferFlow(ticketMachine: TicketMachine) {
+                println("Enter offer ID to delete:")
+                val id = readln().toIntOrNull()
+
+                if (id == null) {
+                    println("Invalid ID.")
+                    return
+                }
+
+                val result = ticketMachine.deleteSpecialOfferById(id)
+                if (result) println("Offer deleted.") else println("Offer not found.")
+            }
 
 
             // TODO: Add admin menu (special offers etc.)
