@@ -29,14 +29,12 @@ class TicketMachine(
      */
     fun addSpecialOffer(offer: SpecialOffer) {
         specialOffers.add(offer)
-
-        /**
-         * Returns all special offers for a given station name.
-         */
-        fun findSpecialOffersByStation(stationName: String): List<SpecialOffer> {
-            return specialOffers.filter { it.station.stationName == stationName }
-
-
     }
 
+    /**
+     * Returns all special offers for a given station name.
+     */
+    fun findSpecialOffersByStation(stationName: String): List<SpecialOffer> {
+        return specialOffers.filter { it.station.name == stationName }
+    }
 }
