@@ -20,7 +20,8 @@ class TicketMachine (
     // the ticket machine will be situated in the fictional station London
     val originStation: String = "London Central",
     val users: List<User> = listOf(
-        User("admin", "pass123")
+        User(username = "admin", password = "pass123", isAdmin = true)
+
     ),
     val specialOffers: MutableList<SpecialOffer> = mutableListOf<SpecialOffer>()
 
