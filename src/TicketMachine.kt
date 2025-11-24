@@ -1,3 +1,4 @@
+import java.time.LocalDate
 
 class TicketMachine (
 //declaring values attributes, this will be the main list of stations
@@ -22,13 +23,121 @@ class TicketMachine (
     // the ticket machine will be situated in the fictional station London
     val originStation: String = "London Central",
    val users: List<User> = listOf(
-       User(username = "admin", password = "pass123", isAdmin = true)
+       User(username = "admin", password = "admin123", isAdmin = true),
+       User(username = "user", password = "user123", isAdmin = false)
    ),
    val specialOffers: MutableList<SpecialOffer> = mutableListOf()
     ) {
 
 
     //member C methods :
+
+    fun loginAdmin(): Any {
+        println("=== Admin Login ===")
+
+        print("Username: ")
+        val username = readln()
+
+        print("Password: ")
+        val password = readln()
+
+        val user = users.firstOrNull { it.username == username && it.password == password }
+
+        if (user == null) {
+            println("Invalid username or password.")
+            return false
+        }
+
+        if (!user.isAdmin) {
+            println("Access denied. User is not an admin.")
+            return false
+        }
+
+        println("Welcome, admin!")
+        return true
+    }
+
+    fun showAdminMenu(ticketMachine: TicketMachine) {
+        while (true) {
+            println("\n=== Admin Menu ===")
+            println("1. Add special offer")
+            println("2. Search offers by station")
+            println("3. Delete offer by ID")
+            println("4. Exit menu")
+            print("Choose option: ")
+
+            when (readln().trim()) {
+                "1" -> addOfferFlow(ticketMachine)
+                "2" -> searchOfferFlow(ticketMachine)
+                "3" -> deleteOfferFlow(ticketMachine)
+                "4" -> return
+                else -> println("Invalid option.")
+            }
+        }
+    }
+
+    fun addOfferFlow(ticketMachine: TicketMachine) {
+        println("Enter station name:")
+        val stationName = readln().trim()
+
+        val station = ticketMachine.stations.firstOrNull { it.name == stationName }
+        if (station == null) {
+            println("Station not found.")
+            return
+        }
+
+        println("Enter description:")
+        val description = readln().trim()
+
+        println("Enter start date (YYYY-MM-DD):")
+        val start = LocalDate.parse(readln().trim())
+
+        println("Enter end date (YYYY-MM-DD):")
+        val end = LocalDate.parse(readln().trim())
+
+        val offer = SpecialOffer(
+            id = ticketMachine.specialOffers.size + 1,
+            station = station,
+            description = description,
+            discountFactor = 1.0,
+            startDate = start,
+            endDate = end
+        )
+
+        ticketMachine.addSpecialOffer(offer)
+        println("Offer added!")
+    }
+
+    fun searchOfferFlow(ticketMachine: TicketMachine) {
+        println("Enter station name:")
+        val station = readln().trim()
+
+        val list = ticketMachine.findSpecialOffersByStation(station)
+
+        if (list.isEmpty()) {
+            println("No offers found.")
+        } else {
+            list.forEach {
+                println("ID: ${it.id} | ${it.station.name} | ${it.description} | ${it.startDate} → ${it.endDate}")
+            }
+        }
+    }
+
+    fun deleteOfferFlow(ticketMachine: TicketMachine) {
+        println("Enter offer ID to delete:")
+        val id = readln().toIntOrNull()
+
+        if (id == null) {
+            println("Invalid ID.")
+            return
+        }
+
+        if (ticketMachine.deleteSpecialOfferById(id)) {
+            println("Offer deleted.")
+        } else {
+            println("Offer not found.")
+        }
+    }
     /**
      * Adds a new special offer to the internal list.
      */
@@ -52,6 +161,8 @@ class TicketMachine (
     fun deleteSpecialOfferById(id: Int): Boolean {
         return specialOffers.removeIf { it.id == id }
     }
+
+
     // Member B – Admin methods
 
     /** Show all destinations for admin. */
@@ -103,7 +214,7 @@ class TicketMachine (
             returnPrice = newReturnPrice
         )
 
-        // replace in the list
+        // replace it in the list
         stations[index] = updatedStation
         return true
     }
@@ -115,8 +226,8 @@ class TicketMachine (
             station.returnPrice = (station.returnPrice * factor * 100).toInt() / 100.0
         }
     }
-
-    fun mainMenu(){
+//member A
+    fun mainMenu(): Any {
 
         while (true){
             //show menu to user customer
@@ -128,13 +239,15 @@ class TicketMachine (
             println("1. Search for a ticket")
             println("2. Insert money")
             println("3. Buy selected ticket")
+            println("X. Admin login")
             println("4. Exit")
             print("Please choose an option (1-4): ")
-            //according to the input it will take the user to a different function
+            //according to the input, it will take the user to a different function
             when(readln()){
                 "1" -> return searchTicket()
                 "2" -> return insertMoney()
                 "3" -> return buyTicket()
+                "X" -> return loginAdmin()
                 "4" -> {
                     println("Thanks you for using the ticket machine. GoodBye")
                         if(currentBalance > 0){
@@ -149,7 +262,7 @@ class TicketMachine (
 
     fun searchTicket(
     ){
-        // 1. Ask for ticket type first
+        // 1. Ask for a ticket type first
         print("Enter ticket type (single/return): ")
         val typeInput = readln().lowercase()
 
@@ -219,7 +332,7 @@ class TicketMachine (
         }
         mainMenu()
     }
-    //this function will allow to purchase the ticket
+    //this function will allow purchasing the ticket
     fun buyTicket(){
 
         println("--- Buy Ticket ---")
@@ -230,7 +343,7 @@ class TicketMachine (
         val ticketPrice = selectedTicket!!.price
         val type = selectedTicket!!.type
         val name = selectedTicket!!.station
-        //get price of the ticket based on the type
+        //get the price of the ticket based on the type
         println("Your total for $name, $type will be: £${"%.2f".format(ticketPrice)}")
 
         //make sure the balance is enough
@@ -254,7 +367,7 @@ class TicketMachine (
             println("Your change: £${"%.2f".format(currentBalance)}")
             currentBalance = 0.0
         }
-        //  Reset for next customer
+        //  Reset for the next customer
         selectedTicket = null
 
     }
