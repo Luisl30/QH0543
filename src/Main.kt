@@ -4,9 +4,140 @@ import java.time.LocalDate
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 
+val users = listOf(
+    User(username = "admin", password = "admin123", isAdmin = true),
+    User(username = "user", password = "user123", isAdmin = false)
+)
 
+fun loginAdmin(): Boolean {
+    println("=== Admin Login ===")
 
+    print("Username: ")
+    val username = readln()
 
+    print("Password: ")
+    val password = readln()
+
+    val user = users.firstOrNull { it.username == username && it.password == password }
+
+    if (user == null) {
+        println("Invalid username or password.")
+        return false
+    }
+
+    if (!user.isAdmin) {
+        println("Access denied. User is not an admin.")
+        return false
+    }
+
+    println("Welcome, admin!")
+    return true
+}
+
+fun showAdminMenu(ticketMachine: TicketMachine) {
+    while (true) {
+        println("\n=== Admin Menu ===")
+        println("1. Add special offer")
+        println("2. Search offers by station")
+        println("3. Delete offer by ID")
+        println("4. View All Destinations")
+        println("5. Add Destination")
+        println("6. Change Destination Details")
+        println("7. Change All Prices By Factor")
+        println("8. Exit menu")
+        print("Choose option: ")
+
+        when (readln().trim()) {
+            "1" -> addOfferFlow(ticketMachine)
+            "2" -> searchOfferFlow(ticketMachine)
+            "3" -> deleteOfferFlow(ticketMachine)
+            "4" -> ticketMachine.viewAllDestinations().forEach { println(it) }
+            "5" -> {
+                print("Name: "); val n = readln()
+                print("Single: "); val s = readln().toDouble()
+                print("Return: "); val r = readln().toDouble()
+                println(if (ticketMachine.addDestination(n, s, r)) "Added" else "Already exists")
+            }
+            "6" -> {
+                print("Old: "); val old = readln()
+                print("New: "); val new = readln()
+                print("New single: "); val ns = readln().toDouble()
+                print("New return: "); val nr = readln().toDouble()
+                println(if (ticketMachine.changeDestinationDetails(old, new, ns, nr)) "Updated" else "Not found")
+            }
+            "7" ->  {
+                print("Factor (e.g. 1.1): "); val f = readln().toDouble()
+                ticketMachine.changeAllPricesByFactor(f)
+                println("Prices updated.")
+            }
+            "8" -> return
+            else -> println("Invalid option.")
+        }
+    }
+}
+
+fun addOfferFlow(ticketMachine: TicketMachine) {
+    println("Enter station name:")
+    val stationName = readln().trim()
+
+    val station = ticketMachine.stations.firstOrNull { it.name == stationName }
+    if (station == null) {
+        println("Station not found.")
+        return
+    }
+
+    println("Enter description:")
+    val description = readln().trim()
+
+    println("Enter start date (YYYY-MM-DD):")
+    val start = LocalDate.parse(readln().trim())
+
+    println("Enter end date (YYYY-MM-DD):")
+    val end = LocalDate.parse(readln().trim())
+
+    val offer = SpecialOffer(
+        id = ticketMachine.specialOffers.size + 1,
+        station = station,
+        description = description,
+        discountFactor = 1.0,
+        startDate = start,
+        endDate = end
+    )
+
+    ticketMachine.addSpecialOffer(offer)
+    println("Offer added!")
+}
+
+fun searchOfferFlow(ticketMachine: TicketMachine) {
+    println("Enter station name:")
+    val station = readln().trim()
+
+    val list = ticketMachine.findSpecialOffersByStation(station)
+
+    if (list.isEmpty()) {
+        println("No offers found.")
+    } else {
+        list.forEach {
+            println("ID: ${it.id} | ${it.station.name} | ${it.description} | ${it.startDate} → ${it.endDate}")
+        }
+    }
+}
+
+fun deleteOfferFlow(ticketMachine: TicketMachine) {
+    println("Enter offer ID to delete:")
+    val id = readln().toIntOrNull()
+
+    if (id == null) {
+        println("Invalid ID.")
+        return
+    }
+
+    if (ticketMachine.deleteSpecialOfferById(id)) {
+        println("Offer deleted.")
+    } else {
+        println("Offer not found.")
+    }
+}
 
 
 /**
@@ -15,7 +146,7 @@ import java.time.LocalDate
  * this is where admin-only functionality will be placed.
  */
 fun main() {
-    while (true) {
+   /* while (true) {
         // Try to log in as administrator
         if (loginAdmin()) {
             println("Admin login successful.")
@@ -45,6 +176,38 @@ fun main() {
         if (answer != "y") {
             println("Exiting program.")
             break
+        }
+    }
+    // 1. Create the machine (which creates the lists of stations/users)
+    val machine = TicketMachine()
+
+    // 2. Start the menu (which loops and handles all user input)
+    machine.mainMenu()
+*/
+
+    val machine = TicketMachine()
+
+    while (true) {
+        println("\n=== Main Mode Selection ===")
+        println("1. Customer")
+        println("2. Admin")
+        println("3. Exit")
+        print("Choose option: ")
+
+        when (readln().trim()) {
+            "1" -> machine.mainMenu()
+            "2" -> {
+                if (loginAdmin()) {
+                    showAdminMenu(machine)
+                } else {
+                    println("Admin login failed.")
+                }
+            }
+            "3" -> {
+                println("Goodbye!")
+                return
+            }
+            else -> println("Invalid option.")
         }
     }
 }

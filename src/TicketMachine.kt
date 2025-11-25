@@ -20,7 +20,7 @@ class TicketMachine (
     ),
     var currentBalance : Double = 0.0,
     var selectedTicket : Ticket? = null,
-    // the ticket machine will be situated in the fictional station London
+    // the ticket machine will be situated in the fictional station in London
     val originStation: String = "London Central",
    val users: List<User> = listOf(
        User(username = "admin", password = "admin123", isAdmin = true),
@@ -32,115 +32,6 @@ class TicketMachine (
 
     //member C methods :
 
-    fun loginAdmin(): Any {
-        println("=== Admin Login ===")
-
-        print("Username: ")
-        val username = readln()
-
-        print("Password: ")
-        val password = readln()
-
-        val user = users.firstOrNull { it.username == username && it.password == password }
-
-        if (user == null) {
-            println("Invalid username or password.")
-            return false
-        }
-
-        if (!user.isAdmin) {
-            println("Access denied. User is not an admin.")
-            return false
-        }
-
-        println("Welcome, admin!")
-        return true
-    }
-
-    fun showAdminMenu(ticketMachine: TicketMachine) {
-        while (true) {
-            println("\n=== Admin Menu ===")
-            println("1. Add special offer")
-            println("2. Search offers by station")
-            println("3. Delete offer by ID")
-            println("4. Exit menu")
-            print("Choose option: ")
-
-            when (readln().trim()) {
-                "1" -> addOfferFlow(ticketMachine)
-                "2" -> searchOfferFlow(ticketMachine)
-                "3" -> deleteOfferFlow(ticketMachine)
-                "4" -> return
-                else -> println("Invalid option.")
-            }
-        }
-    }
-
-    fun addOfferFlow(ticketMachine: TicketMachine) {
-        println("Enter station name:")
-        val stationName = readln().trim()
-
-        val station = ticketMachine.stations.firstOrNull { it.name == stationName }
-        if (station == null) {
-            println("Station not found.")
-            return
-        }
-
-        println("Enter description:")
-        val description = readln().trim()
-
-        println("Enter start date (YYYY-MM-DD):")
-        val start = LocalDate.parse(readln().trim())
-
-        println("Enter end date (YYYY-MM-DD):")
-        val end = LocalDate.parse(readln().trim())
-
-        val offer = SpecialOffer(
-            id = ticketMachine.specialOffers.size + 1,
-            station = station,
-            description = description,
-            discountFactor = 1.0,
-            startDate = start,
-            endDate = end
-        )
-
-        ticketMachine.addSpecialOffer(offer)
-        println("Offer added!")
-    }
-
-    fun searchOfferFlow(ticketMachine: TicketMachine) {
-        println("Enter station name:")
-        val station = readln().trim()
-
-        val list = ticketMachine.findSpecialOffersByStation(station)
-
-        if (list.isEmpty()) {
-            println("No offers found.")
-        } else {
-            list.forEach {
-                println("ID: ${it.id} | ${it.station.name} | ${it.description} | ${it.startDate} → ${it.endDate}")
-            }
-        }
-    }
-
-    fun deleteOfferFlow(ticketMachine: TicketMachine) {
-        println("Enter offer ID to delete:")
-        val id = readln().toIntOrNull()
-
-        if (id == null) {
-            println("Invalid ID.")
-            return
-        }
-
-        if (ticketMachine.deleteSpecialOfferById(id)) {
-            println("Offer deleted.")
-        } else {
-            println("Offer not found.")
-        }
-    }
-    /**
-     * Adds a new special offer to the internal list.
-     */
     fun addSpecialOffer(offer: SpecialOffer) {
         specialOffers.add(offer)
     }
@@ -172,9 +63,9 @@ class TicketMachine (
 
     /** Add a new destination (station). */
     fun addDestination(
-        name: String,
-        singlePrice: Double,
-        returnPrice: Double
+        name: String = "",
+        singlePrice: Double = 0.0,
+        returnPrice: Double = 0.0
     ): Boolean {
         // check if a station with the same name already exists
         val exists = stations.any { it.name.equals(name, ignoreCase = true) }
@@ -194,10 +85,10 @@ class TicketMachine (
 
     /** Change destination details: name + prices.  */
     fun changeDestinationDetails(
-        oldName: String,
-        newName: String,
-        newSinglePrice: Double,
-        newReturnPrice: Double
+        oldName: String = "",
+        newName: String = "",
+        newSinglePrice: Double = 0.0,
+        newReturnPrice: Double = 0.0
     ): Boolean {
         // find index of the station by its old name
         val index = stations.indexOfFirst { it.name.equals(oldName, ignoreCase = true) }
@@ -220,14 +111,14 @@ class TicketMachine (
     }
 
     /** Change all prices by a factor (e.g. 1.1 = +10%, 0.9 = -10%). */
-    fun changeAllPricesByFactor(factor: Double) {
+    fun changeAllPricesByFactor(factor: Double = 0.0) {
         stations.forEach { station ->
             station.singlePrice = (station.singlePrice * factor * 100).toInt() / 100.0
             station.returnPrice = (station.returnPrice * factor * 100).toInt() / 100.0
         }
     }
 //member A
-    fun mainMenu(): Any {
+    fun mainMenu() {
 
         while (true){
             //show menu to user customer
@@ -239,7 +130,7 @@ class TicketMachine (
             println("1. Search for a ticket")
             println("2. Insert money")
             println("3. Buy selected ticket")
-            println("X. Admin login")
+            //println("X. Admin login")
             println("4. Exit")
             print("Please choose an option (1-4): ")
             //according to the input, it will take the user to a different function
@@ -247,13 +138,13 @@ class TicketMachine (
                 "1" -> return searchTicket()
                 "2" -> return insertMoney()
                 "3" -> return buyTicket()
-                "X" -> return loginAdmin()
+                //"X" -> return loginAdmin()
                 "4" -> {
                     println("Thanks you for using the ticket machine. GoodBye")
                         if(currentBalance > 0){
                             println("Please take your change: £${"%.2f".format(currentBalance)}")
                         }
-                    return // End the program
+                     return// End the program
 
                 }
             }
