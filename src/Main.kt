@@ -9,6 +9,13 @@ val users = listOf(
     User(username = "user", password = "user123", isAdmin = false)
 )
 
+/** Fix the way the destinations are printed. */
+fun Station.pretty(): String =
+    "Station: $name, " +
+            "Single price = £${"%.2f".format(singlePrice)}, " +
+            "Return price = £${"%.2f".format(returnPrice)}, " +
+            "Takings = £${"%.2f".format(takings)}"
+
 fun loginAdmin(): Boolean {
     println("=== Admin Login ===")
 
@@ -51,7 +58,7 @@ fun showAdminMenu(ticketMachine: TicketMachine) {
             "1" -> addOfferFlow(ticketMachine)
             "2" -> searchOfferFlow(ticketMachine)
             "3" -> deleteOfferFlow(ticketMachine)
-            "4" -> ticketMachine.viewAllDestinations().forEach { println(it) }
+            "4" -> ticketMachine.viewAllDestinations().forEach { println(it.pretty()) }
             "5" -> {
                 print("Name: "); val n = readln()
                 print("Single: "); val s = readln().toDouble()
