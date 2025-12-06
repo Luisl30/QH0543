@@ -233,7 +233,7 @@ class TicketMachine (
         }
         val ticketPrice = selectedTicket!!.price
         val type = selectedTicket!!.type
-        val name = selectedTicket!!.station
+        val name = selectedTicket!!.station.pretty()
         //get the price of the ticket based on the type
         println("Your total for $name, $type will be: £${"%.2f".format(ticketPrice)}")
 
